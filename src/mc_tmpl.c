@@ -114,13 +114,13 @@ prep_c(int16_t *tmp, const pixel *src, const ptrdiff_t src_stride,
 
 #define GET_H_FILTER(mx) \
     const int8_t *const fh = !(mx) ? NULL : w > 4 ? \
-        dav1d_mc_subpel_filters[filter_type & 3][(mx) - 1] : \
-        dav1d_mc_subpel_filters[3 + (filter_type & 1)][(mx) - 1]
+        dav1d_mc_subpel_filters[filter_type & 3][0] : \
+        dav1d_mc_subpel_filters[3 + (filter_type & 1)][0]
 
 #define GET_V_FILTER(my) \
     const int8_t *const fv = !(my) ? NULL : h > 4 ? \
-        dav1d_mc_subpel_filters[filter_type >> 2][(my) - 1] : \
-        dav1d_mc_subpel_filters[3 + ((filter_type >> 2) & 1)][(my) - 1]
+        dav1d_mc_subpel_filters[filter_type >> 2][0] : \
+        dav1d_mc_subpel_filters[3 + ((filter_type >> 2) & 1)][0]
 
 #define GET_FILTERS() \
     GET_H_FILTER(mx); \
