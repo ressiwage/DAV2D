@@ -39,6 +39,7 @@ loop_filter(pixel *dst, int E, int I, int H,
             const ptrdiff_t stridea, const ptrdiff_t strideb, const int wd
             HIGHBD_DECL_SUFFIX)
 {
+    return;
     const int bitdepth_min_8 = bitdepth_from_max(bitdepth_max) - 8;
     const int F = 1 << bitdepth_min_8;
     E <<= bitdepth_min_8;

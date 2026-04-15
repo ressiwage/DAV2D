@@ -82,7 +82,7 @@ COLD void dav1d_default_settings(Dav1dSettings *const s) {
     s->frame_size_limit = 0;
     s->strict_std_compliance = 0;
     s->output_invisible_frames = 0;
-    s->inloop_filters = DAV1D_INLOOPFILTER_ALL;
+    s->inloop_filters = DAV1D_INLOOPFILTER_NONE;
     s->decode_frame_type = DAV1D_DECODEFRAMETYPE_ALL;
 }
 
