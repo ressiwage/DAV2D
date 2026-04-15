@@ -75,24 +75,24 @@ prep_c(int16_t *tmp, const pixel *src, const ptrdiff_t src_stride,
 }
 
 #define FILTER_8TAP(src, x, F, stride) \
-    (F[0] * src[x + -3 * stride] + \
+    (\
      F[1] * src[x + -2 * stride] + \
      F[2] * src[x + -1 * stride] + \
      F[3] * src[x + +0 * stride] + \
      F[4] * src[x + +1 * stride] + \
      F[5] * src[x + +2 * stride] + \
-     F[6] * src[x + +3 * stride] + \
-     F[7] * src[x + +4 * stride])
+     F[6] * src[x + +3 * stride]  \
+     )
 
 #define FILTER_8TAP2(src, x, F) \
-    (F[0] * src[0][x] + \
+    (\
      F[1] * src[1][x] + \
      F[2] * src[2][x] + \
      F[3] * src[3][x] + \
      F[4] * src[4][x] + \
      F[5] * src[5][x] + \
-     F[6] * src[6][x] + \
-     F[7] * src[7][x])
+     F[6] * src[6][x]  \
+     )
 
 #define DAV1D_FILTER_8TAP_RND(src, x, F, stride, sh) \
     ((FILTER_8TAP(src, x, F, stride) + ((1 << (sh)) >> 1)) >> (sh))
