@@ -442,23 +442,23 @@ const uint8_t ALIGN(dav1d_sgr_x_by_x[256], 64) = {
 };
 
 ATTR_MCMODEL_SMALL
-const int8_t ALIGN(dav1d_mc_subpel_filters[6][15][8], 64) = {
+const int8_t ALIGN(dav1d_mc_subpel_filters[6][1][8], 64) = {
     [DAV1D_FILTER_8TAP_REGULAR] = {
-        {   0,   1,  -7,  38,  38,  -7,   1,   0 },
+        {   -7,  39,  39,  -7 },
     }, [DAV1D_FILTER_8TAP_SMOOTH] = {
-        {   0,  -1,   7,  26,  26,   7,  -1,   0 },
+        {   6,  26,  26,   6 },
     }, [DAV1D_FILTER_8TAP_SHARP] = {
-        {  -2,   6, -12,  40,  40, -12,   6,  -2 },
+        {   -12,  44,  44, -12 },
     /* width <= 4 */
     }, [3 + DAV1D_FILTER_8TAP_REGULAR] = {
-        {   0,   0,  -6,  38,  38,  -6,   0,   0 },
+        {    -6,  38,  38,  -6 },
     }, [3 + DAV1D_FILTER_8TAP_SMOOTH] = {
-        {   0,   0,   6,  26,  26,   6,   0,   0 },
+        {     6,  26,  26,   6 },
     /* Bilin scaled being very rarely used, add a new table entry
      * and use the put/prep_8tap_scaled code, thus acting as a
      * scaled bilinear filter. */
     }, [5] = {
-        {   0,   0,   0, 32,  32,   0,   0,   0 },
+        {     0, 32,  32,   0 },
     }
 };
 
