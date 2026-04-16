@@ -92,13 +92,13 @@ prep_c(int16_t *tmp, const pixel *src, const ptrdiff_t src_stride,
      )
 
 #define DAV1D_FILTER_8TAP_RND(src, x, F, stride, sh) \
-    ((FILTER_8TAP(src, x, F, stride) + ((1 << (sh)) >> 1)) >> (sh))
+    ((FILTER_8TAP(src, x, F, stride) ) >> (sh))
 
 #define DAV1D_FILTER_8TAP_RND2(src, x, F, stride, rnd, sh) \
     ((FILTER_8TAP(src, x, F, stride) + (rnd)) >> (sh))
 
 #define DAV1D_FILTER_8TAP_RND3(src, x, F, sh) \
-    ((FILTER_8TAP2(src, x, F) + ((1 << (sh)) >> 1)) >> (sh))
+    ((FILTER_8TAP2(src, x, F) ) >> (sh))
 
 #define DAV1D_FILTER_8TAP_CLIP(src, x, F, stride, sh) \
     iclip_pixel(DAV1D_FILTER_8TAP_RND(src, x, F, stride, sh))
