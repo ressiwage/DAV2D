@@ -48,9 +48,7 @@ inv_txfm_add_c(pixel *dst, const ptrdiff_t stride, coef *const coeff,
     const TxfmInfo *const t_dim = &dav1d_txfm_dimensions[tx];
     const int w = 4 * t_dim->w, h = 4 * t_dim->h;
     const int has_dconly = txtp == DCT_DCT;
-    assert(w >= 4 && w <= 64);
-    assert(h >= 4 && h <= 64);
-    assert(eob >= 0);
+
 
     const int is_rect2 = w * 2 == h || h * 2 == w;
     const int rnd = (1 << shift) >> 1;
@@ -92,7 +90,6 @@ inv_txfm_add_c(pixel *dst, const ptrdiff_t stride, coef *const coeff,
     } else {
         last_nonzero_col = dav1d_last_nonzero_col_from_eob[tx][eob];
     }
-    assert(last_nonzero_col < sh);
     for (int y = 0; y <= last_nonzero_col; y++, c += w) {
         if (is_rect2)
             for (int x = 0; x < sw; x++)

@@ -26,6 +26,7 @@
  */
 
 #include "config.h"
+#include <string.h>
 
 #include <stddef.h>
 #include <stdint.h>
@@ -35,6 +36,8 @@
 #include "src/itx_1d.h"
 
 #define CLIP(a) iclip(a, min, max)
+
+#define XTREME_CUT 2
 
 /*
  * In some places, we use the pattern like this:
@@ -67,10 +70,12 @@ inv_dct4_1d_internal_c(int32_t *const c, const ptrdiff_t stride,
                        const int min, const int max, const int tx64)
 {
     assert(stride > 0);
+    //memset(&c[(4 / XTREME_CUT) * stride], 0, (4-(4 / XTREME_CUT)) * sizeof(int32_t) );
+
     const int in0 = c[0 * stride], in1 = c[1 * stride];
 
     int t0, t1, t2, t3;
-    if (tx64) {
+    if (1||tx64) {
         t0 = t1 = (in0 * 181 + 128) >> 8;
         t2 = (in1 * 1567 + 2048) >> 12;
         t3 = (in1 * 3784 + 2048) >> 12;
@@ -100,12 +105,14 @@ inv_dct8_1d_internal_c(int32_t *const c, const ptrdiff_t stride,
                        const int min, const int max, const int tx64)
 {
     assert(stride > 0);
+    //memset(&c[(8 / XTREME_CUT) * stride], 0, (8-(8 / XTREME_CUT)) * sizeof(int32_t) );
+
     inv_dct4_1d_internal_c(c, stride << 1, min, max, tx64);
 
     const int in1 = c[1 * stride], in3 = c[3 * stride];
 
     int t4a, t5a, t6a, t7a;
-    if (tx64) {
+    if (1||tx64) {
         t4a = (in1 *   799 + 2048) >> 12;
         t5a = (in3 * -2276 + 2048) >> 12;
         t6a = (in3 *  3406 + 2048) >> 12;
@@ -153,13 +160,15 @@ inv_dct16_1d_internal_c(int32_t *const c, const ptrdiff_t stride,
                         const int min, const int max, int tx64)
 {
     assert(stride > 0);
+    //memset(&c[(16 / XTREME_CUT) * stride], 0, (16-(16 / XTREME_CUT)) * sizeof(int32_t) );
+
     inv_dct8_1d_internal_c(c, stride << 1, min, max, tx64);
 
     const int in1 = c[1 * stride], in3 = c[3 * stride];
     const int in5 = c[5 * stride], in7 = c[7 * stride];
 
     int t8a, t9a, t10a, t11a, t12a, t13a, t14a, t15a;
-    if (tx64) {
+    if (1||tx64) {
         t8a  = (in1 *   401 + 2048) >> 12;
         t9a  = (in7 * -2598 + 2048) >> 12;
         t10a = (in5 *  1931 + 2048) >> 12;
@@ -248,6 +257,7 @@ inv_dct32_1d_internal_c(int32_t *const c, const ptrdiff_t stride,
                         const int min, const int max, const int tx64)
 {
     assert(stride > 0);
+    //memset(&c[(32 / XTREME_CUT) * stride], 0, (32-(32 / XTREME_CUT)) * sizeof(int32_t) );
     inv_dct16_1d_internal_c(c, stride << 1, min, max, tx64);
 
     const int in1  = c[ 1 * stride], in3  = c[ 3 * stride];
@@ -257,7 +267,7 @@ inv_dct32_1d_internal_c(int32_t *const c, const ptrdiff_t stride,
 
     int t16a, t17a, t18a, t19a, t20a, t21a, t22a, t23a;
     int t24a, t25a, t26a, t27a, t28a, t29a, t30a, t31a;
-    if (tx64) {
+    if (1||tx64) {
         t16a = (in1  *   201 + 2048) >> 12;
         t17a = (in15 * -2751 + 2048) >> 12;
         t18a = (in9  *  1751 + 2048) >> 12;
@@ -437,6 +447,8 @@ static void inv_dct64_1d_c(int32_t *const c, const ptrdiff_t stride,
                            const int min, const int max)
 {
     assert(stride > 0);
+    //memset(&c[(64 / XTREME_CUT) * stride], 0, (64-(64 / XTREME_CUT)) * sizeof(int32_t) );
+
     inv_dct32_1d_internal_c(c, stride << 1, min, max, 1);
 
     const int in1  = c[ 1 * stride], in3  = c[ 3 * stride];

@@ -127,6 +127,7 @@ unsigned dav1d_msac_decode_bool_c(MsacContext *const s, const unsigned f) {
     return !ret;
 }
 
+
 /* Decodes a symbol given an inverse cumulative distribution function (CDF)
  * table in Q15. */
 unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
@@ -138,7 +139,7 @@ unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
 
     assert(n_symbols <= 15);
     assert(cdf[n_symbols] <= 32);
-
+    
     do {
         val++;
         u = v;
@@ -151,7 +152,7 @@ unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
 
     ctx_norm(s, s->dif - ((ec_win)v << (EC_WIN_SIZE - 16)), u - v);
 
-    if (s->allow_update_cdf) {
+    if ( s->allow_update_cdf) {
         const unsigned count = cdf[n_symbols];
         const unsigned rate = 4 + (count >> 4) + (n_symbols > 2);
         unsigned i;
