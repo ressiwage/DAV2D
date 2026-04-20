@@ -265,6 +265,8 @@ prep_8tap_c(int16_t *tmp, const pixel *src, ptrdiff_t src_stride,
             } while (--tmp_h);
 
             mid_ptr = mid + 128 * 3;
+            
+            
             do {
                 for (int x = 0; x < w; x++) {
                     int t = DAV1D_FILTER_8TAP_RND(mid_ptr, x, fv, 128, 6) -
@@ -276,6 +278,7 @@ prep_8tap_c(int16_t *tmp, const pixel *src, ptrdiff_t src_stride,
                 mid_ptr += 128;
                 tmp += w;
             } while (--h);
+
         } else {
             do {
                 for (int x = 0; x < w; x++)

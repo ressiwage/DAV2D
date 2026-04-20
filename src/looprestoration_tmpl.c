@@ -46,6 +46,7 @@ static void wiener_filter_h(uint16_t *dst, const pixel (*left)[4],
                             const int w, const enum LrEdgeFlags edges
                             HIGHBD_DECL_SUFFIX)
 {
+    
     const int bitdepth = bitdepth_from_max(bitdepth_max);
     const int round_bits_h = 3 + (bitdepth == 12) * 2;
     const int rounding_off_h = 1 << (round_bits_h - 1);
@@ -253,6 +254,7 @@ static void wiener_c(pixel *p, const ptrdiff_t stride,
                      const LooprestorationParams *const params,
                      const enum LrEdgeFlags edges HIGHBD_DECL_SUFFIX)
 {
+    return;
     // Values stored between horizontal and vertical filtering don't
     // fit in a uint8_t.
     uint16_t hor[6 * REST_UNIT_STRIDE];
