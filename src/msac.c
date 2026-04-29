@@ -159,29 +159,18 @@ unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
         const unsigned rate = 4 + (count >> 4) + (n_symbols > 2);
         unsigned i;
 
-        // for (i = 0; i < val; i++)
-        //     cdf[i] += (32768 - cdf[i]) >> rate;
-        // for (; i < n_symbols; i++)
-        //     cdf[i] -= cdf[i] >> rate;
-
-        // cdf[i] += ((-(cdf[i] - 32768)) >> rate); -(cdf[i] >> rate)
-
-        // (-(cdf[i] - 32768)) >> rate     -(cdf[i] >> rate)
-        // -(cdf[i] >> rate) = ~(a>>b)+1 = (unsigned)(-a) >> b
-
-        
+        // может это попробовать? не уверен
+        // const unsigned mask  = -(unsigned)(i < val);
+        // // если mask=0xFF..: delta = 32768 - cdf[i], иначе delta = -cdf[i]
+        // const unsigned delta = ((32768 & mask) - cdf[i]);
+        // cdf[i] += (int)delta >> rate;   // арифметический сдвиг сохраняет знак
 
         for (i = 0; i < n_symbols; i++){
-            unsigned const mask = -(i<val);
-            unsigned target = (32768) & ((unsigned)mask);
-            const int  switch_sign = ( (i<val) << 1) - 1; // 0<<1-1 = -1; 1<<1-1 = 1
-            cdf[i] += switch_sign*((target + ( (-switch_sign)*cdf[i])) >> rate);
+            const int mask = (i<val);
+            const int  switch_sign = ( mask << 1) - 1; // 0<<1-1 = -1; 1<<1-1 = 1
+            cdf[i] += switch_sign*(((32768) & ((unsigned)(-mask)) +  (-switch_sign)*cdf[i]) >> rate);
         }
 
-        // for (i = 0; i < val; i++)
-        //     cdf[i] += (32768 - cdf[i]) >> rate;
-        // for (; i < n_symbols; i++)
-        //     cdf[i] -= cdf[i] >> rate;
                         
         cdf[n_symbols] = count + (count < 32);
     }
