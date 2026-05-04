@@ -143,14 +143,12 @@ unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
     do {
         val++;
         u = v;
-        v = ((r * (cdf[val] >> EC_PROB_SHIFT)) >> (7-EC_PROB_SHIFT)) + (EC_MIN_PROB * ((unsigned)n_symbols - val));
-
-        // v = r * (cdf[val] >> EC_PROB_SHIFT);
-        // v >>= 7 - EC_PROB_SHIFT;
-        // v += EC_MIN_PROB * ((unsigned)n_symbols - val);
-        
+        v = r * (cdf[val] >> EC_PROB_SHIFT);
+        v >>= 7 - EC_PROB_SHIFT;
+        v += EC_MIN_PROB * ((unsigned)n_symbols - val);
     } while (c < v);
 
+    assert(u <= s->rng);
 
     ctx_norm(s, s->dif - ((ec_win)v << (EC_WIN_SIZE - 16)), u - v);
 
@@ -158,31 +156,10 @@ unsigned dav1d_msac_decode_symbol_adapt_c(MsacContext *const s,
         const unsigned count = cdf[n_symbols];
         const unsigned rate = 4 + (count >> 4) + (n_symbols > 2);
         unsigned i;
-
-        // for (i = 0; i < val; i++)
-        //     cdf[i] += (32768 - cdf[i]) >> rate;
-        // for (; i < n_symbols; i++)
-        //     cdf[i] -= cdf[i] >> rate;
-
-        // cdf[i] += ((-(cdf[i] - 32768)) >> rate); -(cdf[i] >> rate)
-
-        // (-(cdf[i] - 32768)) >> rate     -(cdf[i] >> rate)
-        // -(cdf[i] >> rate) = ~(a>>b)+1 = (unsigned)(-a) >> b
-
-        
-
-        for (i = 0; i < n_symbols; i++){
-            unsigned const mask = -(i<val);
-            unsigned target = (32768) & ((unsigned)mask);
-            const int  switch_sign = ( (i<val) << 1) - 1; // 0<<1-1 = -1; 1<<1-1 = 1
-            cdf[i] += switch_sign*((target + ( (-switch_sign)*cdf[i])) >> rate);
-        }
-
-        // for (i = 0; i < val; i++)
-        //     cdf[i] += (32768 - cdf[i]) >> rate;
-        // for (; i < n_symbols; i++)
-        //     cdf[i] -= cdf[i] >> rate;
-                        
+        for (i = 0; i < val; i++)
+            cdf[i] += (32768 - cdf[i]) >> rate;
+        for (; i < n_symbols; i++)
+            cdf[i] -= cdf[i] >> rate;
         cdf[n_symbols] = count + (count < 32);
     }
 
